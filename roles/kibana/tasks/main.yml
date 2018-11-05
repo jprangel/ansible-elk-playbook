@@ -5,10 +5,10 @@
 
 # Install Kibana 
 
-- name: Install Kibana with apt
-  apt:
+- name: Install Kibana
+  yum:
    name: kibana
-   update_cache: yes
+   state: present
  
 # Configurations
 
@@ -29,7 +29,25 @@
    destfile: /etc/kibana/kibana.yml
    regexp: 'elasticsearch.url:'
    line: 'elasticsearch.url: "http://localhost:9200"'
-   
+
+- name: Add the user 'kibana'
+  user:
+    name: kibana
+    shell: /sbin/nologin
+    create_home: false
+
+- name: Apply permissions to log 
+  command: |
+    chown kibana "{{item}}"
+  with_items:
+    - "/var/log/kibana"
+
+- name: Enable service Kibana
+  service:
+    name: kibana
+    enabled: yes
+
+ 
 # Starting Kibana
 
 - name: Starting Kibana

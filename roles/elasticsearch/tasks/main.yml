@@ -6,21 +6,25 @@
 # Add Elasticsearch apt key
 
 - name: Add Elasticsearch apt key
-  apt_key:
-   url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+  rpm_key:
+   key: "https://packages.elastic.co/GPG-KEY-elasticsearch"
    state: present
 
 # Add the Elasticsearch apt repo. For versions 6 of the stack - use '6.x-prerelease':
 
 - name: Adding Elasticsearch repo
-  apt_repository:
-   repo: deb https://artifacts.elastic.co/packages/5.x/apt stable main
+  yum_repository:
+   name: elasticsearch-6.x
+   description: Elasticsearch repository for 6.x packages
+   baseurl: "https://artifacts.elastic.co/packages/6.x/yum"
+   enabled: yes
+   gpgcheck: no
    state: present
 
 # Installing Elasticsearch
 
 - name: Install Elasticsearch
-  apt:
+  yum:
    name: elasticsearch
    update_cache: yes
    
@@ -39,6 +43,11 @@
    destfile: /etc/elasticsearch/elasticsearch.yml
    regexp: 'http.port:'
    line: 'http.port: 9200'
+
+- name: Enable service Elasticsearch
+  service:
+    name: elasticsearch
+    enabled: yes
  
 # Start Elasticsearch
 - name: Starting Elasticsearch

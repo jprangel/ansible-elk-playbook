@@ -5,10 +5,16 @@
 
 # Install Filebeat 
 
-- name: Install Filebeat with apt
-  apt:
+- name: Install Filebeat
+  yum:
    name: filebeat
-   update_cache: yes
+   state: present
+
+- name: Updating the config file to enable filebeat
+  lineinfile:
+   destfile: /etc/filebeat/filebeat.yml
+   regexp: 'enabled:'
+   line: 'enabled: true'
 
 # Starting Filebeat
 
@@ -16,3 +22,8 @@
   service:
    name: filebeat
    state: started
+
+- name: Enable service Filebeat
+  service:
+    name: filebeat
+    enabled: yes
