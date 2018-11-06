@@ -1,0 +1,12 @@
+- name: Updating the Filebeat config file to elasticsearch server
+  lineinfile:
+   destfile: /etc/filebeat/filebeat.yml
+   regexp: 'hosts:'
+   line: 'hosts: ["elastic-server.copiloto.cloud.local:9200"]'
+
+- name: Updating the Metricbeat config file to elasticsearch server
+  lineinfile:
+   destfile: /etc/metricbeat/metricbeat.yml
+   regexp: 'hosts:'
+   line: 'hosts: ["elastic-server.copiloto.cloud.local:9200"]'
+
