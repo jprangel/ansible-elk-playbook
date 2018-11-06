@@ -1,0 +1,11 @@
+---
+#
+# Playbook to install the ELK stack + Beats
+#
+- hosts: localhost
+  become: true
+  roles:
+  - { role: metricbeat }
+  - { role: filebeat }
+  - { role: client-logs }
+
